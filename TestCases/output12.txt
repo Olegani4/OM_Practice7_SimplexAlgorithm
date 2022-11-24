@@ -1,0 +1,7 @@
+	x1	x2	s1	s2	b
+s1	1	-1	1	0	10	
+s2	1	0	0	1	40	
+z	-2	-1	0	0	0	
+
+SOLUTION FOUND: no feasible solution
+Objective: z = ∞

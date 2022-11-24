@@ -1,0 +1,11 @@
+	x1	x2	s1	b
+s1	20	170	1	20000	
+z	-200	-1	0	0	
+
+	x1	x2	s1	b
+x1	1	17/2	1/20	1000	
+z	0	1699	10	200000	
+
+SOLUTION FOUND: unique solution
+Objective: z = 200000
+1000	0	0	
