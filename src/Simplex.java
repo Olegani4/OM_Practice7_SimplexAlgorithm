@@ -208,16 +208,16 @@ public class Simplex {
         return simplexMatrix;
     }
 
-    private static void writeFile(double[][] simplexMatrix, String[] rowsAndColsNames) {
+    private static void writeFile(double[][] simplexMatrix, String[] rowsAndColsNames, String fileName) {
         String[] simplexMatrixStr = new String[simplexMatrix.length + 1];
         DecimalFormat format = new DecimalFormat("0.####");
 
         try {
-            File checkFileExistence = new File("output.txt");
+            File checkFileExistence = new File(fileName);
             if (checkFileExistence.exists())
                 simplexMatrixStr[0] = "\n";
 
-            FileWriter writer = new FileWriter("output.txt", checkFileExistence.exists());
+            FileWriter writer = new FileWriter(fileName, checkFileExistence.exists());
             if (simplexMatrixStr[0] == null) {
                 simplexMatrixStr[0] = '\t' + rowsAndColsNames[simplexMatrix.length];
                 for (int i = simplexMatrix.length + 1; i < simplexMatrix[0].length + simplexMatrix.length; i++)
@@ -332,12 +332,12 @@ public class Simplex {
         return xStar;
     }
 
-    public static void startProgram(String fileName) throws IOException {
+    public static void startProgram(String inputFileName, String outputFileName) throws IOException {
         boolean noFeasSol = false;
-        double[][] simplexMatrix = readFile(fileName);
+        double[][] simplexMatrix = readFile(inputFileName);
         String[] rowsAndColsNames = createRowsColsNames(simplexMatrix.length, simplexMatrix[0].length);
 
-        writeFile(simplexMatrix, rowsAndColsNames);
+        writeFile(simplexMatrix, rowsAndColsNames, outputFileName);
         if (!isFeasSol(simplexMatrix)) {
             noFeasSol = true;
         }
@@ -345,21 +345,21 @@ public class Simplex {
             rowsAndColsNames = changeSlackToX(rowsAndColsNames, simplexMatrix);
             simplexMatrix = matrixTransformation(simplexMatrix);
             simplexMatrix = divX(simplexMatrix, rowsAndColsNames);
-            writeFile(simplexMatrix, rowsAndColsNames);
+            writeFile(simplexMatrix, rowsAndColsNames, outputFileName);
             if (!isFeasSol(simplexMatrix))
                 noFeasSol = true;
         }
 
         while (true) {
             if (noFeasSol) {
-                FileWriter writer = new FileWriter("output.txt", true);
+                FileWriter writer = new FileWriter(outputFileName, true);
                 writer.write('\n' + "SOLUTION FOUND: unbounded problem\n");
                 writer.write('\n');
                 writer.close();
                 break;
             }
 
-            FileWriter writer = new FileWriter("output.txt", true);
+            FileWriter writer = new FileWriter(outputFileName, true);
             writer.write('\n' + "SOLUTION FOUND: unique solution");
             if (simplexMatrix[simplexMatrix.length - 1][simplexMatrix[0].length - 1] ==
                     (int) simplexMatrix[simplexMatrix.length - 1][simplexMatrix[0].length - 1])
@@ -388,6 +388,20 @@ public class Simplex {
 
 
     public static void main(String[] args) throws IOException {
-        startProgram("input.txt");
+        String inputFileName;
+        String outputFileName = "output";
+        Scanner fileName = new Scanner(System.in);
+
+        System.out.println("Enter name of input file (example: input3.txt): ");
+        inputFileName = fileName.nextLine();
+
+        for (int i = 0; i < inputFileName.length(); i++)
+            if (Character.isDigit(inputFileName.charAt(i)))
+                outputFileName += inputFileName.charAt(i);
+        outputFileName += ".txt";
+
+        startProgram(inputFileName, outputFileName);
+
+        System.out.println("The answer is written into file '" + outputFileName + "'.");
     }
 }
