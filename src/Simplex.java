@@ -202,7 +202,11 @@ public class Simplex {
                 i++;
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("ERROR: file is not found");
+            System.out.print("\nPress enter to continue...");
+            Scanner pressEnterSc = new Scanner(System.in);
+            String pressEnter = pressEnterSc.nextLine();
+            System.exit(1);
         }
 
         return simplexMatrix;
@@ -392,7 +396,7 @@ public class Simplex {
         String outputFileName = "output";
         Scanner fileName = new Scanner(System.in);
 
-        System.out.println("Enter name of input file (example: input3.txt): ");
+        System.out.print("Enter name of input file (example: input3.txt): ");
         inputFileName = fileName.nextLine();
 
         for (int i = 0; i < inputFileName.length(); i++)
@@ -403,5 +407,8 @@ public class Simplex {
         startProgram(inputFileName, outputFileName);
 
         System.out.println("The answer is written into file '" + outputFileName + "'.");
+        System.out.print("\nPress enter to continue...");
+        Scanner pressEnterSc = new Scanner(System.in);
+        String pressEnter = pressEnterSc.nextLine();
     }
 }
